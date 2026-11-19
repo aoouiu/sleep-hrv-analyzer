@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>夜间心率 / HRV</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+<h1>夜间心率 / 入睡窗口</h1>
+<p>上传 CSV（timestamp, heart_rate_bpm），后端调用同一份 Python 分析模块。</p>
+<input type="file" id="file" accept=".csv">
+<button onclick="upload()">分析</button>
+<p id="result"></p>
+<canvas id="chart" height="120"></canvas>
+<script>
+let chart;
+async function upload() {
+  const f = document.getElementById('file').files[0];
+  if (!f) return alert('先选一个 CSV 文件');
+  const fd = new FormData(); fd.append('file', f);
+  const r = await fetch('/analyze', {method: 'POST', body: fd});
+  const d = await r.json();
+  document.getElementById('result').textContent =
+    '估计入睡时间：' + (d.sleep_onset.sleep_onset || '未检出（' + (d.sleep_onset.reason || '') + '）');
+  if (chart) chart.destroy();
+  chart = new Chart(document.getElementById('chart'), {
+    type: 'line',
+    data: {labels: d.series.timestamps,
+      datasets: [{label: '心率 bpm', data: d.series.hr, borderWidth: 1, pointRadius: 0}]},
+    options: {responsive: true}
+  });
+}
+</script>
+</body>
+</html>
