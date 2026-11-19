@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+outputs/
+# 真实健康数据绝不进仓库
+data/*.xml
+data/*.zip
+data/your_*.csv
+!data/sample_night.csv
+.DS_Store

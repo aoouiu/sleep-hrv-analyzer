@@ -1,0 +1,13 @@
+numpy>=1.26
+pandas>=2.0
+scipy>=1.11
+matplotlib>=3.6
+# HRV / 生理信号：核心依赖，按需安装
+neurokit2>=0.2
+heartpy>=1.2
+# 睡眠分期 / 体动（可选，验证阶段用）
+# biosppy / BioPsyKit、SleepECG 较重，先在 Notebook 里验证再决定是否进 requirements
+# biospsykit>=0.4
+# sleepecg>=0.5
+# Web 展示层（第二阶段）
+Flask>=3.0
